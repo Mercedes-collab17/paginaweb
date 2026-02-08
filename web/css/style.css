@@ -51,6 +51,7 @@ html {
 
 article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   display: block;
+  margin-top: auto;
 }
 
 body {
@@ -9953,10 +9954,61 @@ h4, h5, h6 {
 .hero-title .accent{ color:var(--accent); font-size:1.15em; font-weight:700; }
 .btn-cta{ display:inline-block; background:var(--btn-bg); color:var(--btn-txt); border-radius:999px; padding:12px 20px; font-weight:600; border:0; box-shadow:0 1px 0 rgba(0,0,0,.05), 0 6px 20px rgba(0,0,0,.08); transition:transform .15s, box-shadow .2s; }
 .btn-cta:hover{ transform:translateY(-1px); box-shadow:0 8px 26px rgba(0,0,0,.12); }
-.portrait-card{ background:var(--card-bg); border-radius:var(--radius-xl); padding:clamp(12px,2.5vw,20px); width:100%;  display:grid; place-items:center; overflow:hidden; }
+.portrait-card{ background:var(--card-bg); border-radius:var(--radius-xl); padding:clamp(12px,2.5vw,20px); width:80%; display:grid; place-items:center; overflow:hidden; }
 .hero-photo{ width:120%; height:100%; object-fit:contain; filter:drop-shadow(0 12px 24px rgba(0,0,0,.15)); }
-.hero-photo-mid{ height:100%; object-fit:contain; filter:drop-shadow(0 12px 24px rgba(0,0,0,.15)); }
-@media (max-width: 767.98px){ .hero-psico{ padding:40px 0; } .portrait-card{ aspect-ratio:1/1; } }
+.hero-photo-mid{width:150%; height: 100%; max-width: none; object-fit: contain; filter:drop-shadow(0 12px 24px rgba(0,0,0,.15)); }
+.hero-media{
+    min-height: auto;         /* media pantalla */
+    display: flex;
+    align-items: stretch;       /* centra verticalmente dentro */
+    justify-content: center;   /* centra horizontalmente dentro */
+  }
+@media (max-width: 767.98px){
+
+  /* 1) No fuerces altura en móvil */
+  .hero-psico{
+    padding: 28px 0;
+    height: auto;          /* clave */
+    min-height: 0;         /* evita reservas raras */
+    align-items: stretch;  /* que no centre vertical recortando */
+  }
+  .hero-media{
+    min-height: auto;     /* clave */
+    padding-top: 12px;
+    display: flex;
+    justify-content: center; /* centra horizontal */
+  }
+
+  /* 2) Si el layout es flex con dos columnas, pásalo a columna */
+  .hero-psico .row,
+  .hero-psico .hero-inner{   /* usa la clase real de tu contenedor */
+    flex-direction: column;
+  }
+
+  /* 3) Título más controlado en pantallas pequeñas */
+  .hero-title{
+    font-size: clamp(28px, 8vw, 40px);
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+
+  /* 4) La tarjeta de imagen: que no se dispare */
+  .portrait-card{
+    aspect-ratio: auto;     /* mejor que 1/1 si te corta */
+    height: auto;
+    max-height: 320px;      /* límite visual */
+    margin-top: 18px;
+    margin: 18px auto 0; 
+  }
+
+  /* 5) Imagen: sin 120% en móvil */
+  .hero-photo,
+  .hero-photo-mid{
+    width: 100%;
+    height: 80%;
+    object-fit: cover;    /* ok para que no recorte */
+  }
+}
 
 .carousel-item.half-split {
   display: flex;
@@ -10474,6 +10526,10 @@ h4, h5, h6 {
   font-weight: 800;
   line-height: 1.05;
   font-size: clamp(30px, 4vw, 54px);
+
+  text-align: center;       
+  margin-left: auto;         
+  margin-right: auto;
 }
 
 .hero__subtitle{
@@ -10664,7 +10720,18 @@ h4, h5, h6 {
 }
 @media (max-width: 576px){
   .hero__actions .btn{ width: 100%; }
-  .hero--parallax{ background-attachment: scroll; } /* iOS */
+  .hero--parallax{ 
+    background-attachment: fixed;
+    min-height: 40vh;  
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw); 
+    padding-left: 0;
+    padding-right: 0;
+    background-size: cover;
+    background-position: center;
+  }
+  .hero__title{ text-align: center !important; }
 }
 .pro-banner{
   border-bottom: 1px solid rgba(0,0,0,0.06);
@@ -10885,4 +10952,94 @@ h4, h5, h6 {
 .heroReveal.is-in{
   opacity: 1;
   transform: translateY(0);
+}
+.cookie-banner{
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  z-index: 9999;
+  background: #1f1f1f;
+  color: #fff;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+  padding: 14px;
+  display: none;
+}
+
+.cookie-banner.is-visible{ display: block; }
+
+.cookie-banner__inner{
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  gap: 12px;
+}
+
+.cookie-banner__text{
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.35;
+  opacity: .95;
+}
+
+.cookie-banner__actions{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.cookie-btn{
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.cookie-btn--ghost{
+  background: transparent;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.35);
+}
+
+.cookie-btn{
+  background: #f58da3; /* tu rosa */
+  color: #111;
+}
+
+.cookie-modal{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.55);
+  z-index: 10000;
+  display: none;
+  place-items: center;
+  padding: 18px;
+}
+
+.cookie-modal.is-open{ display: grid; }
+
+.cookie-modal__card{
+  width: min(520px, 95vw);
+  background: #fff;
+  color: #111;
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 12px 40px rgba(0,0,0,.35);
+}
+
+.cookie-modal__actions{
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.cookie-switch{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin: 10px 0;
 }
