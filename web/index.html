@@ -27,7 +27,7 @@
     <link href="css/style.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css">
     <link href="https://calendar.google.com/calendar/scheduling-button-script.css" rel="stylesheet">
-    <!--<script src="https://calendar.google.com/calendar/scheduling-button-script.js" defer></script>-->
+    <!--<!--<script src="https://calendar.google.com/calendar/scheduling-button-script.js" defer></script>-->-->
 
 </head>
 
@@ -120,21 +120,11 @@
                             <div class="center-mobile">
                                 <!-- start Google Calendar Appointment Scheduling -->       
                         
-                       
-                                
-                        <script data-consent="third-party">
-                        (function() {
-                        var target = document.currentScript;
-                        window.addEventListener('load', function() {
-                            calendar.schedulingButton.load({
-                            url: 'https://calendar.google.com/calendar/appointments/AcZssZ3oTHK7aVM3SP2_AgRVnGlZB0OpY_NuOf52wvg=?gv=true',
-                            color: '#f58da3',
-                            label: 'Reservar una cita',
-                            target: target,
-                            });
-                        });
-                        })();
-                        </script>
+                       <div id="gcalBtnHero"></div>
+                        <script type="text/plain"
+                                data-consent="third-party"
+                                data-gcal-target="gcalBtnHero"
+                                data-gcal-color="#f58da3"></script>
 
 
                         <!-- end Google Calendar Appointment Scheduling -->
@@ -159,18 +149,18 @@
 
     <!-- Carousel End -->
 
-        <section class="hero hero--parallax">
-        <div class="container hero__inner">
-            <div class="hero__content">
+    <section class="hero hero--parallax">
+    <div class="container hero__inner">
+        <div class="hero__content">
 
-            <h1 class="hero__title text-white">Tiempo y espacio para ti.</h1>
+        <h1 class="hero__title text-white">Tiempo y espacio para ti.</h1>
 
-            <div class="hero__actions">
+        <div class="hero__actions">
 
-            </div>
-            </div>
         </div>
-        </section>
+        </div>
+    </div>
+    </section>
 
     <!-- About Start -->
     <div class="container-fluid py-5">
@@ -301,30 +291,19 @@
     <!-- Action Start -->
     <div class="container-fluid py-5 p-0 mb-5 pb-5">
 
-            <div class="bg-secondary rounded" style="height: 500px;">
-                <div class="row h-100 align-items-center justify-content-center">
-                    <div class="col-lg-7 text-center">
-                        <h1 class="text-white mb-4">Si te sientes preparad@, escríbeme</h1>
-                        <h2 class="text-pink mb-4">Empezamos cuando tu quieras</h2>
-                    <div class="gc-cta" data-gcal-target></div>        
-                    <script data-consent="third-party">
-                    (function() {
-                    var target = document.currentScript;
-                    window.addEventListener('load', function() {
-                        calendar.schedulingButton.load({
-                        url: 'https://calendar.google.com/calendar/appointments/AcZssZ3oTHK7aVM3SP2_AgRVnGlZB0OpY_NuOf52wvg=?gv=true',
-                        color: '#343a40',
-                        label: 'Reservar una cita',
-                        target,
-                        });
-                    });
-                    })();
-                    </script>
-                    <!-- end Google Calendar Appointment Scheduling -->
-                        
-                    </div>
+        <div class="bg-secondary rounded" style="height: 500px;">
+            <div class="row h-100 align-items-center justify-content-center">
+                <div class="col-lg-7 text-center">
+                    <h1 class="text-white mb-4">Si te sientes preparad@, escríbeme</h1>
+                    <h2 class="text-pink mb-4">Empezamos cuando tu quieras</h2>
+                    <div id="gcalBtnAction"></div>
+                        <script type="text/plain"
+                                data-consent="third-party"
+                                data-gcal-target="gcalBtnAction"
+                                data-gcal-color="#343a40"></script>
                 </div>
             </div>
+        </div>
 
     </div>
     <!-- Action End -->
@@ -558,10 +537,25 @@
 
     
     
+
+<script src="mail/contact.js"></script>
+<!-- Cookie Banner -->
+<div id="cookieBanner" class="cookie-banner" role="dialog" aria-live="polite" aria-label="Aviso de cookies">
+  <div class="cookie-banner__inner">
+    <p class="cookie-banner__text">
+      Usamos cookies propias y de terceros para mejorar tu experiencia y para mostrar contenido de terceros (Google Calendar y Maps).
+      Puedes aceptar, rechazar o configurar.
+    </p>
+
+    <div class="cookie-banner__actions">
+      <button id="cookieReject" class="cookie-btn cookie-btn--ghost" type="button">Rechazar</button>
+      <button id="cookieSettings" class="cookie-btn cookie-btn--ghost" type="button">Configurar</button>
+      <button id="cookieAccept" class="cookie-btn" type="button">Aceptar</button>
+    </div>
   </div>
 </div>
 
-<!-- Cookie Settings Modal (simple) -->
+<!-- Cookie Settings Modal -->
 <div id="cookieModal" class="cookie-modal" aria-hidden="true">
   <div class="cookie-modal__card" role="dialog" aria-label="Configuración de cookies">
     <h3>Configuración de cookies</h3>
@@ -607,157 +601,13 @@
 
     <!-- Contact Javascript File -->
     <script src="mail/jqBootstrapValidation.min.js"></script>
-    <script src="mail/contact.js"></script>
+    
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
 
-    <!-- Cookie Banner -->
-<div id="cookieBanner" class="cookie-banner" role="dialog" aria-live="polite" aria-label="Aviso de cookies">
-  <div class="cookie-banner__inner">
-    <p class="cookie-banner__text">
-      Usamos cookies propias y de terceros para mejorar tu experiencia y para mostrar contenido de terceros (como Google Calendar y Maps).
-      Puedes aceptar, rechazar o configurar.
-    </p>
 
-    <div class="cookie-banner__actions">
-      <button id="cookieReject" class="cookie-btn cookie-btn--ghost" type="button">Rechazar</button>
-      <button id="cookieSettings" class="cookie-btn cookie-btn--ghost" type="button">Configurar</button>
-      <button id="cookieAccept" class="cookie-btn" type="button">Aceptar</button>
-    </div>
-  </div>
-</div>
-
-<!-- Cookie Settings Modal -->
-<div id="cookieModal" class="cookie-modal" aria-hidden="true">
-  <div class="cookie-modal__card" role="dialog" aria-label="Configuración de cookies">
-    <h3>Configuración de cookies</h3>
-
-    <label class="cookie-switch">
-      <input type="checkbox" checked disabled>
-      <span>Cookies necesarias (siempre activas)</span>
-    </label>
-
-    <label class="cookie-switch">
-      <input id="consentThirdParty" type="checkbox">
-      <span>Terceros (Google Calendar, Google Maps)</span>
-    </label>
-
-    <div class="cookie-modal__actions">
-      <button id="cookieSave" class="cookie-btn" type="button">Guardar</button>
-      <button id="cookieClose" class="cookie-btn cookie-btn--ghost" type="button">Cerrar</button>
-    </div>
-  </div>
-</div>
-
-
-
-<script>
-(function(){
-  const KEY = "cookieConsent_v1";
-
-  const banner = document.getElementById("cookieBanner");
-  const modal = document.getElementById("cookieModal");
-
-  const btnAccept = document.getElementById("cookieAccept");
-  const btnReject = document.getElementById("cookieReject");
-  const btnSettings = document.getElementById("cookieSettings");
-  const btnSave = document.getElementById("cookieSave");
-  const btnClose = document.getElementById("cookieClose");
-
-  const chkThirdParty = document.getElementById("consentThirdParty");
-
-  if (!banner || !modal) return; // seguridad
-
-  function getConsent(){
-    try { return JSON.parse(localStorage.getItem(KEY) || "null"); }
-    catch { return null; }
-  }
-
-  function setConsent(consent){
-    localStorage.setItem(KEY, JSON.stringify(consent));
-  }
-
-  function showBanner(){ banner.classList.add("is-visible"); }
-  function hideBanner(){ banner.classList.remove("is-visible"); }
-
-  function openModal(){
-    modal.classList.add("is-open");
-    modal.setAttribute("aria-hidden", "false");
-  }
-  function closeModal(){
-    modal.classList.remove("is-open");
-    modal.setAttribute("aria-hidden", "true");
-  }
-
-  function enableThirdParty(){
-    // Cargar script de Google Calendar SOLO con consentimiento
-    if (!document.querySelector('script[data-consent="gcal"]')) {
-      const s = document.createElement("script");
-      s.src = "https://calendar.google.com/calendar/scheduling-button-script.js";
-      s.defer = true;
-      s.setAttribute("data-consent","gcal");
-      document.head.appendChild(s);
-    }
-
-    // Activar iframes bloqueados (Maps, etc.)
-    document.querySelectorAll('iframe[data-src]').forEach((iframe) => {
-      iframe.src = iframe.getAttribute("data-src");
-      iframe.removeAttribute("data-src");
-    });
-
-    // Ejecutar scripts inline bloqueados
-    document.querySelectorAll('script[type="text/plain"][data-consent="third-party"]').forEach((scr) => {
-      const s = document.createElement("script");
-      s.text = scr.textContent;
-      document.body.appendChild(s);
-      scr.remove();
-    });
-  }
-
-  function applyConsent(consent){
-    if (consent && consent.thirdParty) enableThirdParty();
-  }
-
-  const existing = getConsent();
-  if (!existing) showBanner();
-  else applyConsent(existing);
-
-  btnAccept?.addEventListener("click", () => {
-    const consent = { necessary: true, thirdParty: true, date: new Date().toISOString() };
-    setConsent(consent);
-    hideBanner();
-    applyConsent(consent);
-    window.location.replace(window.location.pathname + window.location.search + window.location.hash);
-  });
-
-  btnReject?.addEventListener("click", () => {
-    const consent = { necessary: true, thirdParty: false, date: new Date().toISOString() };
-    setConsent(consent);
-    hideBanner();
-  });
-
-  btnSettings?.addEventListener("click", () => {
-    const current = getConsent();
-    chkThirdParty.checked = !!(current && current.thirdParty);
-    openModal();
-  });
-
-  btnSave?.addEventListener("click", () => {
-    const consent = { necessary: true, thirdParty: !!chkThirdParty.checked, date: new Date().toISOString() };
-    setConsent(consent);
-    closeModal();
-    hideBanner();
-    applyConsent(consent);
-    window.location.replace(window.location.pathname + window.location.search + window.location.hash);
-  });
-
-  btnClose?.addEventListener("click", closeModal);
-  modal.addEventListener("click", (e) => { if (e.target === modal) closeModal(); });
-
-})();
-</script>
 
 
 </body>

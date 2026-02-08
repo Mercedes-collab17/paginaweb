@@ -139,20 +139,6 @@ $(document).on('click', '.lightboxOverlay', function(e) {
 (function () {
   const KEY = "cookieConsent_v1";
 
-  const banner = document.getElementById("cookieBanner");
-  const modal = document.getElementById("cookieModal");
-
-  // Si la página no tiene banner/modal, no hacemos nada
-  if (!banner || !modal) return;
-
-  const btnAccept = document.getElementById("cookieAccept");
-  const btnReject = document.getElementById("cookieReject");
-  const btnSettings = document.getElementById("cookieSettings");
-  const btnSave = document.getElementById("cookieSave");
-  const btnClose = document.getElementById("cookieClose");
-
-  const chkThirdParty = document.getElementById("consentThirdParty");
-
   function getConsent() {
     try { return JSON.parse(localStorage.getItem(KEY) || "null"); }
     catch { return null; }
@@ -162,87 +148,119 @@ $(document).on('click', '.lightboxOverlay', function(e) {
     localStorage.setItem(KEY, JSON.stringify(consent));
   }
 
-  function showBanner() { banner.classList.add("is-visible"); }
-  function hideBanner() { banner.classList.remove("is-visible"); }
+  function showBanner() {
+    const banner = document.getElementById("cookieBanner");
+    if (banner) banner.classList.add("is-visible");
+  }
+
+  function hideBanner() {
+    const banner = document.getElementById("cookieBanner");
+    if (banner) banner.classList.remove("is-visible");
+  }
 
   function openModal() {
+    const modal = document.getElementById("cookieModal");
+    if (!modal) return;
     modal.classList.add("is-open");
     modal.setAttribute("aria-hidden", "false");
   }
 
   function closeModal() {
+    const modal = document.getElementById("cookieModal");
+    if (!modal) return;
     modal.classList.remove("is-open");
     modal.setAttribute("aria-hidden", "true");
   }
 
-  function enableThirdParty() {
-    // 1) Ejecuta scripts inline bloqueados
-    document
-      .querySelectorAll('script[type="text/plain"][data-consent="third-party"]')
-      .forEach((scr) => {
-        const s = document.createElement("script");
-        if (scr.src) s.src = scr.src;
-        s.text = scr.textContent;
-        document.body.appendChild(s);
-        scr.parentNode.removeChild(scr);
-      });
-
-    // 2) Activa iframes con data-src (Maps, etc.)
+  function runBlockedThirdParty() {
+    // Maps
     document.querySelectorAll("iframe[data-src]").forEach((iframe) => {
-      iframe.setAttribute("src", iframe.getAttribute("data-src"));
+      iframe.src = iframe.getAttribute("data-src");
       iframe.removeAttribute("data-src");
     });
+
+    // Google Calendar: scripts placeholder
+    document
+      .querySelectorAll('script[type="text/plain"][data-consent="third-party"][data-gcal-target]')
+      .forEach((scr) => {
+        const targetId = scr.dataset.gcalTarget;
+        const color = scr.dataset.gcalColor || "#343a40";
+        const el = document.getElementById(targetId);
+        if (!el) return;
+        if (el.dataset.rendered === "1") return;
+
+        el.innerHTML = "";
+        window.calendar.schedulingButton.load({
+          url: "https://calendar.google.com/calendar/appointments/AcZssZ3oTHK7aVM3SP2_AgRVnGlZB0OpY_NuOf52wvg=?gv=true",
+          color,
+          label: "Reservar una cita",
+          target: el,
+        });
+
+        el.dataset.rendered = "1";
+        scr.remove();
+      });
   }
 
-  function applyConsent(consent) {
-    if (consent && consent.thirdParty) enableThirdParty();
+  function enableThirdParty() {
+    // Si el script de Google Calendar no está cargado, lo cargamos y luego ejecutamos
+    if (!document.querySelector('script[data-consent="gcal-loader"]')) {
+      const s = document.createElement("script");
+      s.src = "https://calendar.google.com/calendar/scheduling-button-script.js";
+      s.defer = true;
+      s.setAttribute("data-consent", "gcal-loader");
+      s.onload = runBlockedThirdParty;
+      document.head.appendChild(s);
+    } else {
+      runBlockedThirdParty();
+    }
   }
 
-  function hardRefreshSameUrl() {
-    // refresh “limpio” sin re-enviar formularios
-    window.location.replace(window.location.pathname + window.location.search + window.location.hash);
-  }
+  document.addEventListener("DOMContentLoaded", () => {
+    const banner = document.getElementById("cookieBanner");
+    if (!banner) return; // esta página no tiene banner
 
-  // Init
-  const existing = getConsent();
-  if (!existing) {
-    showBanner();
-  } else {
-    applyConsent(existing);
-  }
+    const modal = document.getElementById("cookieModal");
 
-  // Events
-  btnAccept?.addEventListener("click", () => {
-    const consent = { necessary: true, thirdParty: true, date: new Date().toISOString() };
-    setConsent(consent);
-    hideBanner();
+    const btnAccept = document.getElementById("cookieAccept");
+    const btnReject = document.getElementById("cookieReject");
+    const btnSettings = document.getElementById("cookieSettings");
+    const btnSave = document.getElementById("cookieSave");
+    const btnClose = document.getElementById("cookieClose");
+    const chkThirdParty = document.getElementById("consentThirdParty");
 
-    // Si quieres refrescar siempre al aceptar:
-    hardRefreshSameUrl();
+    const existing = getConsent();
+    if (!existing) showBanner();
+    else if (existing.thirdParty) enableThirdParty();
+
+    btnAccept?.addEventListener("click", () => {
+      setConsent({ necessary: true, thirdParty: true, date: new Date().toISOString() });
+      hideBanner();
+      enableThirdParty();
+      location.reload();
+    });
+
+    btnReject?.addEventListener("click", () => {
+      setConsent({ necessary: true, thirdParty: false, date: new Date().toISOString() });
+      hideBanner();
+    });
+
+    btnSettings?.addEventListener("click", () => {
+      const current = getConsent();
+      if (chkThirdParty) chkThirdParty.checked = !!(current && current.thirdParty);
+      openModal();
+    });
+
+    btnSave?.addEventListener("click", () => {
+      const consent = { necessary: true, thirdParty: !!(chkThirdParty && chkThirdParty.checked), date: new Date().toISOString() };
+      setConsent(consent);
+      closeModal();
+      hideBanner();
+      if (consent.thirdParty) enableThirdParty();
+    });
+
+    btnClose?.addEventListener("click", closeModal);
+    modal?.addEventListener("click", (e) => { if (e.target === modal) closeModal(); });
   });
-
-  btnReject?.addEventListener("click", () => {
-    const consent = { necessary: true, thirdParty: false, date: new Date().toISOString() };
-    setConsent(consent);
-    hideBanner();
-  });
-
-  btnSettings?.addEventListener("click", () => {
-    const current = getConsent();
-    if (chkThirdParty) chkThirdParty.checked = !!(current && current.thirdParty);
-    openModal();
-  });
-
-  btnSave?.addEventListener("click", () => {
-    const consent = { necessary: true, thirdParty: !!(chkThirdParty && chkThirdParty.checked), date: new Date().toISOString() };
-    setConsent(consent);
-    closeModal();
-    hideBanner();
-
-    // Refresca solo si han activado terceros
-    if (consent.thirdParty) hardRefreshSameUrl();
-  });
-
-  btnClose?.addEventListener("click", closeModal);
-  modal?.addEventListener("click", (e) => { if (e.target === modal) closeModal(); });
 })();
+

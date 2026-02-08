@@ -27,7 +27,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css">
 
     <link href="https://calendar.google.com/calendar/scheduling-button-script.css" rel="stylesheet">
-    <script src="https://calendar.google.com/calendar/scheduling-button-script.js" defer></script>
+    <!--<script src="https://calendar.google.com/calendar/scheduling-button-script.js" defer></script>-->
 </head>
 
 <body>
@@ -119,7 +119,7 @@
 
                 <div class="center-mobile">
                   <!-- start Google Calendar Appointment Scheduling -->
-                  <script>
+                  <script data-consent="third-party">
                     (function() {
                       var target = document.currentScript;
                       window.addEventListener('load', function() {
@@ -229,32 +229,21 @@
 
 
     <!-- Action Start -->
-     <div class="container-fluid py-5 p-0 mb-0 pb-0">
+    <div class="container-fluid py-5 p-0 mb-5 pb-5">
 
-            <div class="bg-secondary rounded" style="height: 500px;">
-                <div class="row h-100 align-items-center justify-content-center">
-                    <div class="col-lg-7 text-center">
-                        <h1 class="text-white mb-4">Si te sientes preparad@, escríbeme</h1>
-                        <h2 class="text-pink mb-4">Empezamos cuando tu quieras</h2>
-                            
-                            <script>
-                    (function() {
-                    var target = document.currentScript;
-                    window.addEventListener('load', function() {
-                        calendar.schedulingButton.load({
-                        url: 'https://calendar.google.com/calendar/appointments/AcZssZ3oTHK7aVM3SP2_AgRVnGlZB0OpY_NuOf52wvg=?gv=true',
-                        color: '#343a40',
-                        label: 'Reservar una cita',
-                        target,
-                        });
-                    });
-                    })();
-                    </script>
-                    <!-- end Google Calendar Appointment Scheduling -->
-                        
-                    </div>
+        <div class="bg-secondary rounded" style="height: 500px;">
+            <div class="row h-100 align-items-center justify-content-center">
+                <div class="col-lg-7 text-center">
+                    <h1 class="text-white mb-4">Si te sientes preparad@, escríbeme</h1>
+                    <h2 class="text-pink mb-4">Empezamos cuando tu quieras</h2>
+                    <div id="gcalBtnAction"></div>
+                        <script type="text/plain"
+                                data-consent="third-party"
+                                data-gcal-target="gcalBtnAction"
+                                data-gcal-color="#343a40"></script>
                 </div>
             </div>
+        </div>
 
     </div>
     <!-- Action End -->
@@ -298,7 +287,7 @@
                 <div class="col-lg-6" style="min-height: 400px;">
                     <div class="position-relative h-100 rounded overflow-hidden">
                         <iframe style="width: 100%; height: 100%; object-fit: cover;"
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3040.641671602886!2d-3.8259681!3d40.3502943!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd41894eead03c67%3A0xa5c26b85509d6ce6!2sSCP%20Salud!5e0!3m2!1ses!2ses!4v1762891977056!5m2!1ses!2ses" 
+                        data-src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3040.641671602886!2d-3.8259681!3d40.3502943!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd41894eead03c67%3A0xa5c26b85509d6ce6!2sSCP%20Salud!5e0!3m2!1ses!2ses!4v1762891977056!5m2!1ses!2ses" 
                         frameborder="0" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
                     </div>
                 </div>
@@ -420,6 +409,45 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+
+    <!-- Cookie Banner -->
+<div id="cookieBanner" class="cookie-banner" role="dialog" aria-live="polite" aria-label="Aviso de cookies">
+  <div class="cookie-banner__inner">
+    <p class="cookie-banner__text">
+      Usamos cookies propias y de terceros para mejorar tu experiencia y para mostrar contenido de terceros (Google Calendar y Maps).
+      Puedes aceptar, rechazar o configurar.
+    </p>
+
+    <div class="cookie-banner__actions">
+      <button id="cookieReject" class="cookie-btn cookie-btn--ghost" type="button">Rechazar</button>
+      <button id="cookieSettings" class="cookie-btn cookie-btn--ghost" type="button">Configurar</button>
+      <button id="cookieAccept" class="cookie-btn" type="button">Aceptar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Cookie Settings Modal -->
+<div id="cookieModal" class="cookie-modal" aria-hidden="true">
+  <div class="cookie-modal__card" role="dialog" aria-label="Configuración de cookies">
+    <h3>Configuración de cookies</h3>
+
+    <label class="cookie-switch">
+      <input type="checkbox" checked disabled>
+      <span>Cookies necesarias (siempre activas)</span>
+    </label>
+
+    <label class="cookie-switch">
+      <input id="consentThirdParty" type="checkbox">
+      <span>Terceros (Google Calendar, Google Maps)</span>
+    </label>
+
+    <div class="cookie-modal__actions">
+      <button id="cookieSave" class="cookie-btn" type="button">Guardar</button>
+      <button id="cookieClose" class="cookie-btn cookie-btn--ghost" type="button">Cerrar</button>
+    </div>
+  </div>
+</div>
+
 </body>
 
 </html>
