@@ -1,4 +1,4 @@
-# robots.txt para Reformas Mazur
+# robots.txt para Merce Martin Psicóloga
 # Indica a los motores de búsqueda qué secciones pueden rastrear
 
 User-agent: *
